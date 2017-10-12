@@ -11,4 +11,12 @@ RUN yumdownloader --enablerepo=ripple-stable --releasever=el7 rippled
 RUN rpm --import https://mirrors.ripple.com/rpm/RPM-GPG-KEY-ripple-release && rpm -K rippled*.rpm
 RUN alien -i --scripts rippled*.rpm && rm rippled*.rpm
 
-ENTRYPOINT ["/opt/ripple/bin/rippled"]
+COPY rippled.conf /etc/rippled.conf
+
+EXPOSE 5005
+EXPOSE 5006
+EXPOSE 51235
+
+VOLUME /data
+
+ENTRYPOINT ["/opt/ripple/bin/rippled", "--conf", "/etc/rippled.conf"]
